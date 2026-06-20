@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T3B.JABHUY — Shirts & Pants</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #fff; color: #111; }
+.page { display: none; }
+.page.active { display: block; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; background: #fff; }
+.nav-logo { font-size: 17px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-right a { font-size: 13px; color: #666; text-decoration: none; cursor: pointer; }
+.nav-right a:hover { color: #111; }
+.cart-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; background: #111; color: #fff; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+.user-chip { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #666; cursor: pointer; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: #1e40af; }
+.hero { padding: 3.5rem 1.5rem 2.5rem; text-align: center; border-bottom: 1px solid #eee; }
+.hero-badge { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; background: #E1F5EE; color: #085041; padding: 4px 12px; border-radius: 8px; margin-bottom: 1rem; }
+.hero h1 { font-size: 28px; font-weight: 500; line-height: 1.2; margin-bottom: 0.75rem; }
+.hero p { font-size: 15px; color: #666; max-width: 400px; margin: 0 auto 1.75rem; line-height: 1.7; }
+.hero-btns { display: flex; justify-content: center; gap: 10px; }
+.btn-dark { background: #111; color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.btn-outline { background: transparent; color: #111; border: 1px solid #ccc; padding: 10px 22px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+.marquee-outer { overflow: hidden; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 16px 0; background: #fff; }
+.marquee-track { display: flex; width: max-content; animation: scroll-left 18s linear infinite; }
+.marquee-outer:hover .marquee-track { animation-play-state: paused; }
+.marquee-item { display: flex; align-items: center; gap: 20px; padding: 0 40px; white-space: nowrap; }
+.marquee-text { font-size: 22px; font-weight: 500; letter-spacing: 0.06em; color: #111; }
+.marquee-text.accent { color: #1D9E75; }
+.marquee-dot { width: 6px; height: 6px; border-radius: 50%; background: #aaa; flex-shrink: 0; }
+.marquee-outer2 { overflow: hidden; padding: 12px 0; background: #f7f7f5; border-bottom: 1px solid #eee; }
+.marquee-track2 { display: flex; width: max-content; animation: scroll-right 24s linear infinite; }
+.marquee-item2 { display: flex; align-items: center; gap: 16px; padding: 0 32px; white-space: nowrap; }
+.marquee-text2 { font-size: 13px; font-weight: 400; letter-spacing: 0.12em; color: #888; text-transform: uppercase; }
+.marquee-dot2 { width: 4px; height: 4px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+@keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.filter-bar { display: flex; align-items: center; gap: 8px; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+.filter-label { font-size: 12px; color: #888; margin-right: 4px; }
+.filter-btn { font-size: 12px; padding: 5px 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #666; cursor: pointer; }
+.filter-btn.active { background: #111; color: #fff; border-color: #111; }
+.products { padding: 1.5rem; }
+.section-title { font-size: 13px; font-weight: 500; color: #888; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
+.card-img { height: 130px; display: flex; align-items: center; justify-content: center; background: #f7f7f5; font-size: 42px; color: #aaa; }
+.card-body { padding: 0.875rem; }
+.card-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 4px; }
+.card-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.card-price { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+.card-old { font-size: 12px; color: #aaa; text-decoration: line-through; margin-left: 6px; font-weight: 400; }
+.card-sizes { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+.size-dot { font-size: 10px; padding: 2px 7px; border: 1px solid #ddd; border-radius: 4px; color: #888; }
+.add-btn { width: 100%; font-size: 13px; font-weight: 500; background: #111; color: #fff; border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
+.add-btn:hover { background: #333; }
+.badge-sale { display: inline-block; font-size: 10px; background: #FAECE7; color: #712B13; padding: 2px 7px; border-radius: 4px; font-weight: 500; margin-left: 4px; }
+.badge-new { display: inline-block; font-size: 10px; background: #E1F5EE; color: #085041; padding: 2px 7px; border-radius: 4px; font-weight: 500; margin-left: 4px; }
+.perks { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #eee; }
+.perk { padding: 1.5rem 1rem; text-align: center; border-right: 1px solid #eee; }
+.perk:last-child { border-right: none; }
+.perk-icon { font-size: 20px; color: #888; margin-bottom: 6px; }
+.perk-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.perk-sub { font-size: 11px; color: #888; }
+.footer { padding: 1rem 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 11px; color: #aaa; }
+.footer-links { display: flex; gap: 1rem; }
+.footer-links a { font-size: 11px; color: #888; text-decoration: none; }
+.auth-wrap { min-height: 520px; display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; background: #f7f7f5; }
+.auth-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 2rem; width: 100%; max-width: 360px; }
+.auth-logo { font-size: 16px; font-weight: 500; text-align: center; margin-bottom: 1.5rem; }
+.auth-title { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.auth-sub { font-size: 13px; color: #888; margin-bottom: 1.5rem; }
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-size: 12px; font-weight: 500; color: #555; margin-bottom: 5px; }
+.field input { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #111; }
+.field input:focus { outline: none; border-color: #999; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-full { width: 100%; padding: 10px; font-size: 14px; font-weight: 500; background: #111; color: #fff; border: none; border-radius: 8px; cursor: pointer; margin-top: 4px; }
+.btn-full:hover { background: #333; }
+.auth-switch { text-align: center; margin-top: 1rem; font-size: 13px; color: #888; }
+.auth-switch span { color: #111; font-weight: 500; cursor: pointer; text-decoration: underline; }
+.divider { display: flex; align-items: center; gap: 10px; margin: 1rem 0; font-size: 12px; color: #aaa; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #eee; }
+.error-msg { font-size: 12px; color: #c0392b; margin-top: 6px; display: none; }
+.settings-layout { display: grid; grid-template-columns: 180px 1fr; min-height: 500px; }
+.settings-sidebar { border-right: 1px solid #eee; padding: 1.25rem 0; display: flex; flex-direction: column; }
+.settings-sidebar a { display: flex; align-items: center; gap: 8px; padding: 8px 1.25rem; font-size: 13px; color: #666; cursor: pointer; text-decoration: none; }
+.settings-sidebar a:hover { color: #111; background: #f7f7f5; }
+.settings-sidebar a.active { color: #111; font-weight: 500; background: #f7f7f5; }
+.settings-sidebar a i { font-size: 15px; }
+.logout-link { color: #c0392b !important; margin-top: auto; }
+.settings-main { padding: 2rem; }
+.settings-main h2 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.settings-main p { font-size: 13px; color: #888; margin-bottom: 1.5rem; }
+.settings-section { border: 1px solid #eee; border-radius: 12px; overflow: hidden; margin-bottom: 1.25rem; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 0.875rem 1rem; border-bottom: 1px solid #eee; gap: 1rem; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row-label { font-size: 13px; font-weight: 500; }
+.settings-row-sub { font-size: 12px; color: #888; margin-top: 2px; }
+.settings-row input[type=text],
+.settings-row input[type=email],
+.settings-row input[type=password] { font-size: 13px; padding: 6px 10px; border: 1px solid #ddd; border-radius: 8px; width: 200px; color: #111; }
+.toggle { width: 36px; height: 20px; border-radius: 10px; background: #ddd; border: none; cursor: pointer; position: relative; flex-shrink: 0; transition: background 0.2s; }
+.toggle.on { background: #1D9E75; }
+.toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: left 0.2s; }
+.toggle.on::after { left: 19px; }
+.btn-sm { font-size: 12px; padding: 6px 14px; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #111; cursor: pointer; }
+.btn-sm:hover { background: #f7f7f5; }
+.save-bar { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1rem; }
+.badge-delivered { font-size: 11px; background: #E1F5EE; color: #085041; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+.badge-shipped { font-size: 11px; background: #dbeafe; color: #1e40af; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- STORE PAGE -->
+<div id="page-store" class="page active">
+  <nav class="nav">
+    <span class="nav-logo" onclick="showPage('page-store')">T3B.JABHUY</span>
+    <div class="nav-right">
+      <a onclick="showPage('page-store')">Shop</a>
+      <a onclick="showPage('page-login')" id="nav-login-link">Login</a>
+      <span id="nav-user" style="display:none;">
+        <span class="user-chip" onclick="showPage('page-settings')">
+          <span class="avatar" id="nav-avatar">JD</span>
+          <span id="nav-username">Jane</span>
+        </span>
+      </span>
+      <button class="cart-btn"><i class="ti ti-shopping-cart"></i> Cart (0)</button>
+    </div>
+  </nav>
+  <section class="hero">
+    <span class="hero-badge">New collection — 2026</span>
+    <h1>Shirts &amp; pants<br>made to last</h1>
+    <p>Premium quality clothing. Clean cuts, quality fabrics, honest prices.</p>
+    <div class="hero-btns">
+      <button class="btn-dark">Shop now</button>
+      <button class="btn-outline">View lookbook</button>
+    </div>
+  </section>
+
+  <div style="padding:1rem 0 0.5rem;text-align:center;border-top:1px solid #eee;">
+    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#aaa;">Trusted by the best</span>
+  </div>
+  <div class="marquee-outer" title="Hover to pause">
+    <div class="marquee-track" id="mt1">
+      <div class="marquee-item">
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text accent">T3B.JABHUY</span><span class="marquee-dot"></span>
+        <span class="marquee-text">T3B.JABHUY</span><span class="marquee-dot"></span>
+      </div>
+    </div>
+  </div>
+  <div class="marquee-outer2">
+    <div class="marquee-track2">
+      <div class="marquee-item2">
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">shirts</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">pants</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">new collection</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">2026</span><span class="marquee-dot2"></span>
+      </div>
+      <div class="marquee-item2">
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">shirts</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">pants</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">new collection</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">T3B.JABHUY</span><span class="marquee-dot2"></span>
+        <span class="marquee-text2">2026</span><span class="marquee-dot2"></span>
+      </div>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-btn" onclick="setFilter(this,'shirt')">Shirts</button>
+    <button class="filter-btn" onclick="setFilter(this,'pant')">Pants</button>
+    <button class="filter-btn" onclick="setFilter(this,'sale')">On sale</button>
+  </div>
+  <div class="products">
+    <div class="section-title" id="sl">Shirts</div>
+    <div class="grid" id="sg">
+      <div class="card" data-cat="shirt">
+        <div class="card-img"><i class="ti ti-shirt"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Shirt <span class="badge-new">New</span></div>
+          <div class="card-name">Classic oxford shirt</div>
+          <div class="card-price">$49.00</div>
+          <div class="card-sizes"><span class="size-dot">S</span><span class="size-dot">M</span><span class="size-dot">L</span><span class="size-dot">XL</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+      <div class="card" data-cat="shirt">
+        <div class="card-img"><i class="ti ti-shirt"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Shirt <span class="badge-sale">Sale</span></div>
+          <div class="card-name">Linen summer shirt</div>
+          <div class="card-price">$35.00 <span class="card-old">$55.00</span></div>
+          <div class="card-sizes"><span class="size-dot">S</span><span class="size-dot">M</span><span class="size-dot">L</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+      <div class="card" data-cat="shirt">
+        <div class="card-img"><i class="ti ti-shirt"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Shirt</div>
+          <div class="card-name">Slim fit polo</div>
+          <div class="card-price">$42.00</div>
+          <div class="card-sizes"><span class="size-dot">M</span><span class="size-dot">L</span><span class="size-dot">XL</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="section-title" id="pl">Pants</div>
+    <div class="grid" id="pg">
+      <div class="card" data-cat="pant">
+        <div class="card-img"><i class="ti ti-layout-bottombar"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Pants <span class="badge-new">New</span></div>
+          <div class="card-name">Slim chino pants</div>
+          <div class="card-price">$65.00</div>
+          <div class="card-sizes"><span class="size-dot">28</span><span class="size-dot">30</span><span class="size-dot">32</span><span class="size-dot">34</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+      <div class="card" data-cat="pant">
+        <div class="card-img"><i class="ti ti-layout-bottombar"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Pants <span class="badge-sale">Sale</span></div>
+          <div class="card-name">Relaxed linen pants</div>
+          <div class="card-price">$48.00 <span class="card-old">$72.00</span></div>
+          <div class="card-sizes"><span class="size-dot">30</span><span class="size-dot">32</span><span class="size-dot">34</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+      <div class="card" data-cat="pant">
+        <div class="card-img"><i class="ti ti-layout-bottombar"></i></div>
+        <div class="card-body">
+          <div class="card-tag">Pants</div>
+          <div class="card-name">Straight fit trousers</div>
+          <div class="card-price">$70.00</div>
+          <div class="card-sizes"><span class="size-dot">30</span><span class="size-dot">32</span><span class="size-dot">34</span><span class="size-dot">36</span></div>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="perks">
+    <div class="perk"><div class="perk-icon"><i class="ti ti-truck"></i></div><div class="perk-title">Free shipping</div><div class="perk-sub">Orders over $80</div></div>
+    <div class="perk"><div class="perk-icon"><i class="ti ti-refresh"></i></div><div class="perk-title">Easy returns</div><div class="perk-sub">30-day policy</div></div>
+    <div class="perk"><div class="perk-icon"><i class="ti ti-shield-check"></i></div><div class="perk-title">Quality guarantee</div><div class="perk-sub">Premium materials</div></div>
+    <div class="perk"><div class="perk-icon"><i class="ti ti-headset"></i></div><div class="perk-title">Support</div><div class="perk-sub">Mon–Sat 9am–6pm</div></div>
+  </div>
+  <footer class="footer">
+    <span class="footer-copy">© 2026 T3B.JABHUY</span>
+    <div class="footer-links"><a href="#">Instagram</a><a href="#">Contact</a><a href="#">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page">
+  <nav class="nav">
+    <span class="nav-logo" onclick="showPage('page-store')">T3B.JABHUY</span>
+    <div class="nav-right"><a onclick="showPage('page-store')">Back to shop</a></div>
+  </nav>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">T3B.JABHUY</div>
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to your account</div>
+      <div class="field"><label>Email address</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+      <div class="error-msg" id="login-err">Please fill in all fields.</div>
+      <button class="btn-full" onclick="doLogin()">Sign in</button>
+      <div class="divider">or</div>
+      <div class="auth-switch">Don't have an account? <span onclick="showPage('page-signup')">Sign up</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNUP PAGE -->
+<div id="page-signup" class="page">
+  <nav class="nav">
+    <span class="nav-logo" onclick="showPage('page-store')">T3B.JABHUY</span>
+    <div class="nav-right"><a onclick="showPage('page-store')">Back to shop</a></div>
+  </nav>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">T3B.JABHUY</div>
+      <div class="auth-title">Create account</div>
+      <div class="auth-sub">Join us and start shopping</div>
+      <div class="field-row">
+        <div class="field"><label>First name</label><input type="text" id="signup-first" placeholder="Jane"></div>
+        <div class="field"><label>Last name</label><input type="text" id="signup-last" placeholder="Doe"></div>
+      </div>
+      <div class="field"><label>Email address</label><input type="email" id="signup-email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="signup-pass" placeholder="Min. 6 characters"></div>
+      <div class="field"><label>Confirm password</label><input type="password" id="signup-pass2" placeholder="Repeat password"></div>
+      <div class="error-msg" id="signup-err"></div>
+      <button class="btn-full" onclick="doSignup()">Create account</button>
+      <div class="auth-switch">Already have an account? <span onclick="showPage('page-login')">Sign in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div id="page-settings" class="page">
+  <nav class="nav">
+    <span class="nav-logo" onclick="showPage('page-store')">T3B.JABHUY</span>
+    <div class="nav-right">
+      <a onclick="showPage('page-store')">Shop</a>
+      <span class="user-chip"><span class="avatar" id="set-avatar">JD</span><span id="set-username">Jane</span></span>
+      <button class="cart-btn"><i class="ti ti-shopping-cart"></i> Cart (0)</button>
+    </div>
+  </nav>
+  <div class="settings-layout">
+    <div class="settings-sidebar">
+      <a class="active" onclick="showTab(this,'tab-profile')"><i class="ti ti-user"></i> Profile</a>
+      <a onclick="showTab(this,'tab-security')"><i class="ti ti-lock"></i> Security</a>
+      <a onclick="showTab(this,'tab-notifications')"><i class="ti ti-bell"></i> Notifications</a>
+      <a onclick="showTab(this,'tab-orders')"><i class="ti ti-package"></i> Orders</a>
+      <a onclick="doLogout()" class="logout-link"><i class="ti ti-logout"></i> Sign out</a>
+    </div>
+    <div class="settings-main">
+      <div id="tab-profile">
+        <h2>Profile</h2>
+        <p>Update your personal information.</p>
+        <div class="settings-section">
+          <div class="settings-row"><div class="settings-row-label">First name</div><input type="text" id="pf-first" value="Jane"></div>
+          <div class="settings-row"><div class="settings-row-label">Last name</div><input type="text" id="pf-last" value="Doe"></div>
+          <div class="settings-row"><div class="settings-row-label">Email</div><input type="email" id="pf-email" value="jane@example.com"></div>
+          <div class="settings-row"><div class="settings-row-label">Phone</div><input type="text" id="pf-phone" placeholder="+1 000 000 0000"></div>
+        </div>
+        <div class="save-bar"><button class="btn-sm" onclick="saveProfile()">Save changes</button></div>
+      </div>
+      <div id="tab-security" style="display:none;">
+        <h2>Security</h2>
+        <p>Manage your password and account security.</p>
+        <div class="settings-section">
+          <div class="settings-row"><div class="settings-row-label">Current password</div><input type="password" placeholder="••••••••"></div>
+          <div class="settings-row"><div class="settings-row-label">New password</div><input type="password" placeholder="Min. 6 characters"></div>
+          <div class="settings-row"><div class="settings-row-label">Confirm new password</div><input type="password" placeholder="Repeat password"></div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-row">
+            <div><div class="settings-row-label">Two-factor authentication</div><div class="settings-row-sub">Add an extra layer of security</div></div>
+            <button class="toggle" onclick="toggleBtn(this)"></button>
+          </div>
+        </div>
+        <div class="save-bar"><button class="btn-sm">Update password</button></div>
+      </div>
+      <div id="tab-notifications" style="display:none;">
+        <h2>Notifications</h2>
+        <p>Choose what updates you receive.</p>
+        <div class="settings-section">
+          <div class="settings-row"><div><div class="settings-row-label">Order updates</div><div class="settings-row-sub">Shipping and delivery alerts</div></div><button class="toggle on" onclick="toggleBtn(this)"></button></div>
+          <div class="settings-row"><div><div class="settings-row-label">Promotions &amp; sales</div><div class="settings-row-sub">Discounts and new arrivals</div></div><button class="toggle on" onclick="toggleBtn(this)"></button></div>
+          <div class="settings-row"><div><div class="settings-row-label">Newsletter</div><div class="settings-row-sub">Weekly style tips</div></div><button class="toggle" onclick="toggleBtn(this)"></button></div>
+        </div>
+      </div>
+      <div id="tab-orders" style="display:none;">
+        <h2>Orders</h2>
+        <p>Your recent purchases.</p>
+        <div class="settings-section">
+          <div class="settings-row"><div><div class="settings-row-label">#ORD-1042 — Classic oxford shirt</div><div class="settings-row-sub">June 12, 2026 · $49.00</div></div><span class="badge-delivered">Delivered</span></div>
+          <div class="settings-row"><div><div class="settings-row-label">#ORD-1038 — Slim chino pants</div><div class="settings-row-sub">May 28, 2026 · $65.00</div></div><span class="badge-shipped">Shipped</span></div>
+          <div class="settings-row"><div><div class="settings-row-label">#ORD-1021 — Linen summer shirt</div><div class="settings-row-sub">Apr 10, 2026 · $35.00</div></div><span class="badge-delivered">Delivered</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function updateNav() {
+  const loginLink = document.getElementById('nav-login-link');
+  const userEl = document.getElementById('nav-user');
+  if (currentUser) {
+    loginLink.style.display = 'none';
+    userEl.style.display = 'inline-flex';
+    const initials = (currentUser.first[0] + currentUser.last[0]).toUpperCase();
+    document.getElementById('nav-avatar').textContent = initials;
+    document.getElementById('set-avatar').textContent = initials;
+    document.getElementById('nav-username').textContent = currentUser.first;
+    document.getElementById('set-username').textContent = currentUser.first;
+    document.getElementById('pf-first').value = currentUser.first;
+    document.getElementById('pf-last').value = currentUser.last;
+    document.getElementById('pf-email').value = currentUser.email;
+  } else {
+    loginLink.style.display = '';
+    userEl.style.display = 'none';
+  }
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
+  if (!email || !pass) { err.style.display = 'block'; err.textContent = 'Please fill in all fields.'; return; }
+  const name = email.split('@')[0];
+  currentUser = { first: name.charAt(0).toUpperCase() + name.slice(1), last: 'User', email };
+  err.style.display = 'none';
+  updateNav();
+  showPage('page-store');
+}
+
+function doSignup() {
+  const first = document.getElementById('signup-first').value.trim();
+  const last = document.getElementById('signup-last').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  const pass2 = document.getElementById('signup-pass2').value;
+  const err = document.getElementById('signup-err');
+  if (!first || !last || !email || !pass) { err.style.display = 'block'; err.textContent = 'Please fill in all fields.'; return; }
+  if (pass.length < 6) { err.style.display = 'block'; err.textContent = 'Password must be at least 6 characters.'; return; }
+  if (pass !== pass2) { err.style.display = 'block'; err.textContent = 'Passwords do not match.'; return; }
+  currentUser = { first, last, email };
+  err.style.display = 'none';
+  updateNav();
+  showPage('page-store');
+}
+
+function doLogout() {
+  currentUser = null;
+  updateNav();
+  showPage('page-store');
+}
+
+function saveProfile() {
+  if (!currentUser) return;
+  currentUser.first = document.getElementById('pf-first').value.trim() || currentUser.first;
+  currentUser.last = document.getElementById('pf-last').value.trim() || currentUser.last;
+  currentUser.email = document.getElementById('pf-email').value.trim() || currentUser.email;
+  updateNav();
+  alert('Profile saved!');
+}
+
+function showTab(link, tabId) {
+  document.querySelectorAll('.settings-sidebar a').forEach(a => a.classList.remove('active'));
+  link.classList.add('active');
+  document.querySelectorAll('.settings-main > div[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById(tabId).style.display = '';
+}
+
+function toggleBtn(btn) { btn.classList.toggle('on'); }
+
+function setFilter(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    const isSale = card.querySelector('.badge-sale');
+    if (cat === 'all') card.style.display = '';
+    else if (cat === 'sale') card.style.display = isSale ? '' : 'none';
+    else card.style.display = card.dataset.cat === cat ? '' : 'none';
+  });
+  [['sg','sl'],['pg','pl']].forEach(([gid, lid]) => {
+    const g = document.getElementById(gid), l = document.getElementById(lid);
+    const vis = [...g.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+    g.style.display = vis ? '' : 'none';
+    l.style.display = vis ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
